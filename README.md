@@ -20,6 +20,8 @@ Scope: Everything is run out of a single AWS account, and all challenges are sub
 I did the exercises without using the  hints and only included the hints after I solved a level.<br>
 To avoid any spoilers, hints are closed by default, but are there if you need them
 
+---
+
 ## Level 1
 This level is *buckets* of fun. See if you can find the first sub-domain.
 
