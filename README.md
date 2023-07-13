@@ -1,12 +1,16 @@
 # Write up for flaws.cloud by Scott Piper - Hacking the cloud
 
+> Personal noteI did the exercises without using the  hints and only included the hints after I solved a level.<br>
+To avoid any spoilers, hints are closed by default, but available if you need them
+
 ### Requirements
-Create an AWS S3 account<br>
+Create an AWS S3 account (free)<br>
 Install aws s3<br>
 &emsp;`$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"`<br>
 &emsp;`$ unzip awscliv2.zip`<br>
 &emsp;`$ sudo ./aws/install`<br>
 
+## Level 1
 ### Description
 Through a series of levels you'll learn about common mistakes and gotchas when using Amazon Web Services (AWS). There are no SQL injection, XSS, buffer overflows, or many of the other vulnerabilities you might have seen before. As much as possible, these are AWS specific issues.
 
@@ -14,15 +18,6 @@ A series of hints are provided that will teach you how to discover the info you'
 
 Scope: Everything is run out of a single AWS account, and all challenges are sub-domains of flaws.cloud. 
 
----
-
-### Personal note
-I did the exercises without using the  hints and only included the hints after I solved a level.<br>
-To avoid any spoilers, hints are closed by default, but are there if you need them
-
----
-
-## Level 1
 This level is *buckets* of fun. See if you can find the first sub-domain.
 
 <details closed>
@@ -108,8 +103,6 @@ As it is an html file, the file will automatically open in the default browser, 
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/assets/37810593/7c1b5e96-99f0-436b-a433-3b94b0b3fdcb">
 </picture>
 
----
-
 ## Level 2
 This level is *buckets* of fun. See if you can find the first sub-domain.
 
@@ -118,4 +111,10 @@ This level is *buckets* of fun. See if you can find the first sub-domain.
 This is a hint
 </details>
 
-### My solution Level 1
+### My solution Level 2
+When looking at the address provided after solving level 1 we get an AccessDenied message
+`$ aws s3 ls s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud --no-sign-request`
+```
+An error occurred (AccessDenied) when calling the ListObjectsV2 operation: Access Denied
+```
+This means, the address cannot be accessed anonymous like in level 1 and a valid AWS is required
