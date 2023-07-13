@@ -54,7 +54,7 @@ Side note (not useful for this game): All S3 buckets, when configured for web ho
 What will help you for this level is to know its permissions are a little loose. 
 </details>
 
-### My solution
+### My solution Level 1
 Find out if flaws.cloud is using AWS S3
 When resolving the flaws.cloud with nslookup, it will provide multiple ip addresses<br>
 `$ nslookup flaws.cloud`
@@ -114,6 +114,8 @@ As it is an html file, the file will automatically open in the default browser, 
 This level is *buckets* of fun. See if you can find the first sub-domain.
 
 <details closed>
-<summary>Hint 1</summary>
+<summary>Level 2: Hint 1</summary>
 This is a hint
 </details>
+
+### My solution Level 1
