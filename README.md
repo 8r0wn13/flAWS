@@ -26,8 +26,32 @@ To avoid any spoilers, hints are closed by default, but are there if you need th
 This level is *buckets* of fun. See if you can find the first sub-domain.
 
 <details closed>
-<summary>Hint 1</summary>
-This is a hint
+<summary>Level 1: Hint 1</summary>
+
+The site flaws.cloud is hosted as an S3 bucket. This is a great way to host a static site, similar to hosting one via github pages. Some interesting facts about S3 hosting: When hosting a site as an S3 bucket, the bucket name (flaws.cloud) must match the domain name (flaws.cloud). Also, S3 buckets are a global name space, meaning two people cannot have buckets with the same name. The result of this is you could create a bucket named apple.com and Apple would never be able host their main site via S3 hosting.
+
+You can determine the site is hosted as an S3 bucket by running a DNS lookup on the domain, such as:
+
+dig +nocmd flaws.cloud any +multiline +noall +answer<br>
+\# Returns:<br>
+\# flaws.cloud.            5 IN A  54.231.184.255<br>
+
+Visiting 54.231.184.255 in your browser will direct you to https://aws.amazon.com/s3/
+
+So you know flaws.cloud is hosted as an S3 bucket.
+
+You can then run:
+
+nslookup 54.231.184.255<br>
+\# Returns:<br>
+\# Non-authoritative answer:<br>
+\# 255.184.231.54.in-addr.arpa     name = s3-website-us-west-2.amazonaws.com
+
+So we know it's hosted in the AWS region us-west-2
+
+Side note (not useful for this game): All S3 buckets, when configured for web hosting, are given an AWS domain you can use to browse to it without setting up your own DNS. In this case, flaws.cloud can also be visited by going to http://flaws.cloud.s3-website-us-west-2.amazonaws.com/
+
+What will help you for this level is to know its permissions are a little loose. 
 </details>
 
 ### My solution
