@@ -13,3 +13,16 @@ Through a series of levels you'll learn about common mistakes and gotchas when u
 A series of hints are provided that will teach you how to discover the info you'll need. If you don't want to actually run any commands, you can just keep following the hints which will give you the solution to the next level. At the start of each level you'll learn how to avoid the problem the previous level exhibited.
 
 Scope: Everything is run out of a single AWS account, and all challenges are sub-domains of flaws.cloud. 
+
+---
+
+## Level 1
+This level is *buckets* of fun. See if you can find the first sub-domain.
+
+
+
+
+<details closed>
+<summary>Hint 1</summary>
+This is a hint
+</details
