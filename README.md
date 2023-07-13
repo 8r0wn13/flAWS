@@ -19,10 +19,63 @@ Scope: Everything is run out of a single AWS account, and all challenges are sub
 ## Level 1
 This level is *buckets* of fun. See if you can find the first sub-domain.
 
-
-
-
 <details closed>
 <summary>Hint 1</summary>
 This is a hint
-</details
+</details>
+
+### My solution
+Find out if flaws.cloud is using AWS S3
+When resolving the flaws.cloud with nslookup, it will provide multiple ip addresses<br>
+`$ nslookup flaws.cloud`
+```
+Non-authoritative answer:
+Name:	flaws.cloud
+Address: 52.218.128.127
+Name:	flaws.cloud
+Address: 52.92.178.75
+Name:	flaws.cloud
+Address: 52.92.211.123
+Name:	flaws.cloud
+Address: 52.218.208.211
+Name:	flaws.cloud
+Address: 52.92.133.171
+Name:	flaws.cloud
+Address: 52.92.195.115
+Name:	flaws.cloud
+Address: 52.92.137.171
+Name:	flaws.cloud
+Address: 52.92.212.91
+```
+By performing another nslookup on the IP address, it will perform a reverse domain lookup `$ nslookup 52.218.128.127`
+```
+127.128.218.52.in-addr.arpa	name = s3-website-us-west-2.amazonaws.com.
+```
+Now we know for sure, flaws.cloud is hosted in a S3 bucket on AWS<br>
+With AWS command line, we can navigate to flaws.cloud and use certain commands<br>
+To see what files are at flaws.cloud `$ aws s3 ls s3://flaws.cloud --no-sign-request`
+> --no-sign-request is needed to avoid checking for credentials
+
+```
+2017-03-14 04:00:38       2575 hint1.html
+2017-03-03 05:05:17       1707 hint2.html
+2017-03-03 05:05:11       1101 hint3.html
+2020-05-22 20:16:45       3162 index.html
+2018-07-10 18:47:16      15979 logo.png
+2017-02-27 02:59:28         46 robots.txt
+2017-02-27 02:59:30       1051 secret-dd02c7c.html
+```
+There is a file secret-dd02c7c.html file<br>
+Download the file to the local machine `$ aws s3 cp s3://flaws.cloud/secret-dd02c7c.html ./ --no-sign-request`
+```
+download: s3://flaws.cloud/secret-dd02c7c.html to ./secret-dd02c7c.html
+```
+Open the file `$ open secret-dd02c7c.html`
+As it is an html file, the file will automatically open in the default browser, showing we found the secret file and giving access to the second level
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/25423296/163456776-7f95b81a-f1ed-45f7-b7ab-8fa810d529fa.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png">
+</picture>
+
+
