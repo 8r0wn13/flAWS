@@ -1,10 +1,10 @@
 # Write up for flaws.cloud - Hacking the cloud
 <hr>
-<b></b>Requirements</b><br>
-<i>AWS S3 account</i><br>
-<i>Install aws s3</i><br>
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"<br>
-unzip awscliv2.zip<br>
-sudo ./aws/install<br>
+***Requirements***
+AWS S3 account<br>
+Install aws s3<br>
+1. curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"<br>
+1. unzip awscliv2.zip<br>
+1. sudo ./aws/install<br>
 
 <hr>
