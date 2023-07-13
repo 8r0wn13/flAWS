@@ -16,6 +16,10 @@ Scope: Everything is run out of a single AWS account, and all challenges are sub
 
 ---
 
+### Personal note
+I did the exercises without using the  hints and only included the hints after I solved a level.<br>
+To avoid any spoilers, hints are closed by default, but are there if you need them
+
 ## Level 1
 This level is *buckets* of fun. See if you can find the first sub-domain.
 
@@ -71,11 +75,19 @@ Download the file to the local machine `$ aws s3 cp s3://flaws.cloud/secret-dd02
 download: s3://flaws.cloud/secret-dd02c7c.html to ./secret-dd02c7c.html
 ```
 Open the file `$ open secret-dd02c7c.html`
-As it is an html file, the file will automatically open in the default browser, showing we found the secret file and giving access to the second level
+As it is an html file, the file will automatically open in the default browser, showing the secret file has been found and giving access to the second level!
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/25423296/163456776-7f95b81a-f1ed-45f7-b7ab-8fa810d529fa.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/8r0wn13/flAWS/assets/37810593/7c1b5e96-99f0-436b-a433-3b94b0b3fdcb">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/8r0wn13/flAWS/assets/37810593/7c1b5e96-99f0-436b-a433-3b94b0b3fdcb">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/assets/37810593/7c1b5e96-99f0-436b-a433-3b94b0b3fdcb">
 </picture>
 
+---
 
+## Level 2
+This level is *buckets* of fun. See if you can find the first sub-domain.
+
+<details closed>
+<summary>Hint 1</summary>
+This is a hint
+</details>
