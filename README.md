@@ -1,11 +1,14 @@
 # Write up for flaws.cloud by Scott Piper - Hacking the cloud
+> Scott Piper created this challenge and therefore all credits (including the screenshots he/I made) should go to him.<br>
+I am thankful Scott created this challenge and I was able to practice with it, especially the explanations after solving a level to have better understanding of where the misconfiguration(s) occured.<br>
 
-> Personal noteI did the exercises without using the  hints and only included the hints after I solved a level.<br>
-To avoid any spoilers, hints are closed by default, but available if you need them
+> Personal note: I did the exercises without using the  hints and only included them after I solved a level.<br>
+To avoid any spoilers, hints are closed by default, but available if you need them.<br>
+Try to solve the levels without the hints in order to have the biggest learning effect :-)
 
 ### Requirements
 Create an AWS S3 account (free)<br>
-Install aws s3<br>
+Install aws s3 cli<br>
 &emsp;`$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"`<br>
 &emsp;`$ unzip awscliv2.zip`<br>
 &emsp;`$ sudo ./aws/install`<br>
@@ -103,8 +106,28 @@ As it is an html file, the file will automatically open in the default browser, 
   <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/assets/37810593/7c1b5e96-99f0-436b-a433-3b94b0b3fdcb">
 </picture>
 
+#### Lesson learned
+On AWS you can set up S3 buckets with all sorts of permissions and functionality including using them to host static files. A number of people accidentally open them up with permissions that are too loose. Just like how you shouldn't allow directory listings of web servers, you shouldn't allow bucket listings.
+
+**Examples of this problem**
+&emsp;Directory listing of S3 bucket of Legal Robot (link) and Shopify (link).
+&emsp;Read and write permissions to S3 bucket for Shopify again (link) and Udemy (link). This challenge did not have read and write permissions, as that would destroy the challenge for other players, but it is a common problem. 
+
+**Avoiding the mistake**
+By default, S3 buckets are private and secure when they are created. To allow it to be accessed as a web page, I had turn on "Static Website Hosting" and changed the bucket policy to allow everyone "s3:GetObject" privileges, which is fine if you plan to publicly host the bucket as a web page. But then to introduce the flaw, I changed the permissions to add "Everyone" to have "List" permissions. 
+
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/8r0wn13/flAWS/assets/37810593/d6d9cc9c-b876-4032-88f9-95bf55a2f317">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/8r0wn13/flAWS/assets/37810593/d6d9cc9c-b876-4032-88f9-95bf55a2f317">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/assets/37810593/d6d9cc9c-b876-4032-88f9-95bf55a2f317">
+</picture>
+
+"Everyone" means everyone on the Internet. You can also list the files simply by going to http://flaws.cloud.s3.amazonaws.com/ due to that List permission.
+
 ## Level 2
-This level is *buckets* of fun. See if you can find the first sub-domain.
+### Description
+The next level is fairly similar, with a slight twist. You're going to need your own AWS account for this. You just need the free tier.
 
 <details closed>
 <summary>Level 2: Hint 1</summary>
