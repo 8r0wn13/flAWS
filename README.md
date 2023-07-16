@@ -137,7 +137,9 @@ This is a hint
 ### My solution Level 2
 When looking at the address provided after solving level 1 we get an AccessDenied message
 `$ aws s3 ls s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud --no-sign-request`
+
 ```
 An error occurred (AccessDenied) when calling the ListObjectsV2 operation: Access Denied
 ```
 This means, the address cannot be accessed anonymous like in level 1 and a valid AWS is required
+<<To be continued, problems with my AWS account>>
