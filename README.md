@@ -142,4 +142,5 @@ When looking at the address provided after solving level 1 we get an AccessDenie
 An error occurred (AccessDenied) when calling the ListObjectsV2 operation: Access Denied
 ```
 This means, the address cannot be accessed anonymous like in level 1 and a valid AWS is required
+
 <<To be continued, problems with my AWS account>>
