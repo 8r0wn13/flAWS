@@ -169,6 +169,16 @@ By default, S3 buckets are private and secure when they are created. To allow it
 
 "Everyone" means everyone on the Internet. You can also list the files simply by going to http://flaws.cloud.s3.amazonaws.com/ due to that List permission. 
 
+## Level 3
+### Description
+The next level is fairly similar, with a slight twist. Time to find your first AWS key! I bet you'll find something that will let you list what other buckets are.
+
+<details closed>
+<summary>Level 3: Hint 1</summary>
+Hint for level 3
+</details>
+
+### My solution Level 3
 
 
 
