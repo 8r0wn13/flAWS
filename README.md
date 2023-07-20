@@ -101,12 +101,12 @@ download: s3://flaws.cloud/secret-dd02c7c.html to ./secret-dd02c7c.html
 Open the file `$ open secret-dd02c7c.html`
 As it is an html file, the file will automatically open in the default browser, showing the secret file has been found and giving access to the second level!
 
-![alt text](https://github.com/8r0wn13/flAWS/images/level2.png?raw=true)
+![alt text](https://github.com/8r0wn13/flAWS/blob/main/images/level2.png?raw=true)
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/8r0wn13/flAWS/images/level2.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/8r0wn13/flAWS/images/level2.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/images/level2.png">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/8r0wn13/flAWS/blob/main/images/level2.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/8r0wn13/flAWS/blob/main/images/level2.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/blob/main/images/level2.png">
 </picture>
 
 #### Lesson learned
