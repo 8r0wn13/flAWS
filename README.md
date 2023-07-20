@@ -103,12 +103,6 @@ As it is an html file, the file will automatically open in the default browser, 
 
 ![alt text](https://github.com/8r0wn13/flAWS/blob/main/images/level2.png?raw=true)
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/8r0wn13/flAWS/blob/main/images/level2.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/8r0wn13/flAWS/blob/main/images/level2.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/blob/main/images/level2.png">
-</picture>
-
 #### Lesson learned
 On AWS you can set up S3 buckets with all sorts of permissions and functionality including using them to host static files. A number of people accidentally open them up with permissions that are too loose. Just like how you shouldn't allow directory listings of web servers, you shouldn't allow bucket listings.
 
@@ -159,6 +153,6 @@ It shows a secret-e4443fc.html file<br>
 Download this file `$ aws s3 cp --profile <<s3 username>> s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud/secret-e4443fc.html ./`
 Open the file `open secret-e4443fc.html`
 
-
+![alt text](https://github.com/8r0wn13/flAWS/blob/main/images/level3.png?raw=true)
 
 <<To be continued, problems with my AWS account>>
