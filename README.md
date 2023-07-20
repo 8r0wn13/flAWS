@@ -113,12 +113,7 @@ On AWS you can set up S3 buckets with all sorts of permissions and functionality
 **Avoiding the mistake**
 By default, S3 buckets are private and secure when they are created. To allow it to be accessed as a web page, I had turn on "Static Website Hosting" and changed the bucket policy to allow everyone "s3:GetObject" privileges, which is fine if you plan to publicly host the bucket as a web page. But then to introduce the flaw, I changed the permissions to add "Everyone" to have "List" permissions. 
 
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/8r0wn13/flAWS/assets/37810593/d6d9cc9c-b876-4032-88f9-95bf55a2f317">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/8r0wn13/flAWS/assets/37810593/d6d9cc9c-b876-4032-88f9-95bf55a2f317">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/assets/37810593/d6d9cc9c-b876-4032-88f9-95bf55a2f317">
-</picture>
+![alt text](https://github.com/8r0wn13/flAWS/blob/main/images/everyone.png?raw=true)
 
 "Everyone" means everyone on the Internet. You can also list the files simply by going to http://flaws.cloud.s3.amazonaws.com/ due to that List permission.
 
