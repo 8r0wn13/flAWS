@@ -142,5 +142,18 @@ When looking at the address provided after solving level 1 we get an AccessDenie
 An error occurred (AccessDenied) when calling the ListObjectsV2 operation: Access Denied
 ```
 This means, the address cannot be accessed anonymous like in level 1 and a valid AWS is required
+Try to do the same but your AWS account `$ aws s3 ls --profile <<s3 username>> s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud`
+
+```
+2017-02-27 03:02:15      80751 everyone.png
+2017-03-03 04:47:17       1433 hint1.html
+2017-02-27 03:04:39       1035 hint2.html
+2017-02-27 03:02:14       2786 index.html
+2017-02-27 03:02:14         26 robots.txt
+2017-02-27 03:02:15       1051 secret-e4443fc.html
+```
+It shows a secret-e4443fc.html file<br>
+Download this file `$ aws s3 cp --profile <<s3 username>> s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud/secret-e4443fc.html ./`
+
 
 <<To be continued, problems with my AWS account>>
