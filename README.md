@@ -106,11 +106,11 @@ As it is an html file, the file will automatically open in the default browser, 
 #### Lesson learned
 On AWS you can set up S3 buckets with all sorts of permissions and functionality including using them to host static files. A number of people accidentally open them up with permissions that are too loose. Just like how you shouldn't allow directory listings of web servers, you shouldn't allow bucket listings.
 
-**Examples of this problem**
+##### Examples of this problem
 &emsp;Directory listing of S3 bucket of Legal Robot (link) and Shopify (link).
 &emsp;Read and write permissions to S3 bucket for Shopify again (link) and Udemy (link). This challenge did not have read and write permissions, as that would destroy the challenge for other players, but it is a common problem. 
 
-**Avoiding the mistake**
+#### Avoiding the mistake
 By default, S3 buckets are private and secure when they are created. To allow it to be accessed as a web page, I had turn on "Static Website Hosting" and changed the bucket policy to allow everyone "s3:GetObject" privileges, which is fine if you plan to publicly host the bucket as a web page. But then to introduce the flaw, I changed the permissions to add "Everyone" to have "List" permissions. 
 
 ![alt text](https://github.com/8r0wn13/flAWS/blob/main/images/everyone.png?raw=true)
@@ -123,7 +123,12 @@ The next level is fairly similar, with a slight twist. You're going to need your
 
 <details closed>
 <summary>Level 2: Hint 1</summary>
-This is a hint
+You need your own AWS key, and you need to use the AWS CLI. Similar to the first level, you can discover that this sub-domain is hosted as an S3 bucket with the name "level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud".
+
+Its permissions are too loose, but you need your own AWS account to see what's inside. Using your own account you can run:
+
+`aws s3 --profile YOUR_ACCOUNT ls s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud`
+
 </details>
 
 ### My solution Level 2
@@ -149,5 +154,23 @@ Download this file `$ aws s3 cp --profile <<s3 username>> s3://level2-c8b217a33f
 Open the file `open secret-e4443fc.html`
 
 ![alt text](https://github.com/8r0wn13/flAWS/blob/main/images/level3.png?raw=true)
+
+#### Lesson learned
+On AWS you can set up S3 buckets with all sorts of permissions and functionality including using them to host static files. A number of people accidentally open them up with permissions that are too loose. Just like how you shouldn't allow directory listings of web servers, you shouldn't allow bucket listings.
+
+#####Examples of this problem
+&emsp;Directory listing of S3 bucket of Legal Robot (link) and Shopify (link).
+&emsp;Read and write permissions to S3 bucket for Shopify again (link) and Udemy (link). This challenge did not have read and write permissions, as that would destroy the challenge for other players, but it is a common problem. 
+
+#### Avoiding the mistake
+By default, S3 buckets are private and secure when they are created. To allow it to be accessed as a web page, I had turn on "Static Website Hosting" and changed the bucket policy to allow everyone "s3:GetObject" privileges, which is fine if you plan to publicly host the bucket as a web page. But then to introduce the flaw, I changed the permissions to add "Everyone" to have "List" permissions. 
+
+![alt text](https://github.com/8r0wn13/flAWS/blob/main/images/authenticated_users.png?raw=true)
+
+"Everyone" means everyone on the Internet. You can also list the files simply by going to http://flaws.cloud.s3.amazonaws.com/ due to that List permission. 
+
+
+
+
 
 <<To be continued, problems with my AWS account>>
