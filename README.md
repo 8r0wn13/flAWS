@@ -104,9 +104,9 @@ As it is an html file, the file will automatically open in the default browser, 
 ![alt text](https://github.com/8r0wn13/flAWS/images/level2.png?raw=true)
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/8r0wn13/flAWS/images/Screenshot from 2023-07-14 00-20-32.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/8r0wn13/flAWS/images/Screenshot from 2023-07-14 00-20-32.png">
-  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/images/Screenshot from 2023-07-14 00-20-32.png">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/8r0wn13/flAWS/images/level2.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/8r0wn13/flAWS/images/level2.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://github.com/8r0wn13/flAWS/images/level2.png">
 </picture>
 
 #### Lesson learned
