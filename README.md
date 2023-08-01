@@ -408,7 +408,153 @@ The above command will return that a region needs to be specified:
 ```
 You must specify a region. You can also configure your region by running "aws configure".
 ```
+I was not able to figure out the region of the owner-id, but according to the hints it is us-west-2, hence:<br>
+`aws --profile unknown_user ec2 describe-snapshots --owner-id 975426262029 --region us-west-2`
+```
+{
+    "Snapshots": [
+        {
+            "Description": "",
+            "Encrypted": false,
+            "OwnerId": "975426262029",
+            "Progress": "100%",
+            "SnapshotId": "snap-0b49342abd1bdcb89",
+            "StartTime": "2017-02-28T01:35:12+00:00",
+            "State": "completed",
+            "VolumeId": "vol-04f1c039bc13ea950",
+            "VolumeSize": 8,
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "flaws backup 2017.02.27"
+                }
+            ],
+            "StorageTier": "standard"
+        }
+    ]
+}
+```
+This shows it is a snapshot with ID `snap-0b49342abd1bdcb89`<br>
+Now the snapshot can be mounted with my own AWS account<br>
+`aws --profile dennis ec2 create-volume --region us-west-2  --snapshot-id  snap-0b49342abd1bdcb89`
+When running the above code it will mention that --availability-zone needs to be provided:<br>
+```
+aws: error: the following arguments are required: --availability-zone
+```
+This information is not given with the previous command and I didn't know where I could find it, hence I looked it up in hint 2.<br>
+In the hint, it is using us-west-2a, but that didn't work for me either<br>
+`aws --profile dennis ec2 create-volume --availability-zone us-west-2a --region us-west-2  --snapshot-id  snap-0b49342abd1bdcb89`
 
+It provided the below error message:
+```
+An error occurred (UnauthorizedOperation) when calling the CreateVolume operation: You are not authorized to perform this operation. Encoded authorization failure message: zqQeOK6QmJCm8AxKWCnL-MviOAu7w39xYPHn10Tt_Ln-D3F7eMbk4qsDtF6mYJ7fV1xLitwz-8IBn-CrBa621nqJhzAFAkyxZw_msYXKysHHEMVXSLqZ9Hpd-CvvrsLBq8HCiBmJQO_5c3OjSXtI7SDUwA9kXY_9nqSXkYT_Y5MKtWNR20ulAjhLLiUufGj_VkYscubtAsrP92mtdWe1ZtoTVKgGDhhj1WDfvISCD1JM4ItvaDZIUTQ3IybeiAleVRdgfARKPQPdFrGXzFuxhQ4CcI9izIYSZa8ey8zSHrpNEfJF2dNIVJB0o32WDKrjFUFV9GH5vVCRfS0VacQ-UMs2mGHb5Q8wHukZcfDKzzlcyQMNRXJyTAUblcUX7_AKsNeJu3eScBjjpgMhVfkIOYAwAGDRuTpbmRf36dWBkmiEf_FhN3XV7W-VKsz4MEMdG9d_hizy90w3nENGdgMZWFYVcQ0pmaCPAsRNFyxYsFY5Zl23-ey2ljQ76_K09gqrfXIhDtXznsgnPQu6YkjPAma-zU4e6KzJAmjOmM5YD5vt_JGBfjnUStPeY8Q1tAPtyJQBhrf5nTCd2qFmH6tKVwwwgpZlcM4ZRUeq2IY_n6qtLP1lGW9FYtbMAokAq-ipvfM
+```
+When looking in the AWS portal, it seemed that availability zones are provided for an account, hence this is something what needs to be looked up I guess<br>
+I couldn't get this to work for some reason, either the above error message or the availability zone doesn't exist<br>
+Looking in hint 2, the next step would be to create an EC2 instance in AWS<br>
+When donwloading the *.pem file, I got every time that the following error message:
+```
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0664 for 'level4_1.pem' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "level4.pem": bad permissions
+ubuntu@ec2-52-90-5-57.compute-1.amazonaws.com: Permission denied (publickey).
+```
+It needs to have r/w or r access only for this user:<br>
+`sudo chmode 600 level4.pem`
+Running the following command will log into the EC2 instance from the local machine:<br>
+`ssh -i level4.pem ubuntu@ec2-52-90-5-57.compute-1.amazonaws.com`
+```
+Welcome to Ubuntu 22.04.2 LTS (GNU/Linux 5.19.0-1025-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Tue Aug  1 23:18:14 UTC 2023
+
+  System load:  0.0               Processes:             95
+  Usage of /:   20.6% of 7.57GB   Users logged in:       0
+  Memory usage: 25%               IPv4 address for eth0: 172.31.87.233
+  Swap usage:   0%
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+```
+Now the volume needs to be mounted to the EC2 instance:<br>
+`sudo file -s /dev/xvda1 /mnt`<br>
+`/sudo mount /dev/xvda1 /mnt`
+
+Now the instance can be searched for passwords:<br>
+```
+/mnt/boot/grub/grubenv
+/mnt/home/ubuntu/.ssh/authorized_keys
+/mnt/home/ubuntu/.cache/motd.legal-displayed
+/mnt/home/ubuntu/.sudo_as_admin_successful
+/mnt/usr/share/netplan/netplan/__pycache__/__init__.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/__pycache__/_features.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/__pycache__/configmanager.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/__pycache__/libnetplan.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/__pycache__/terminal.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/__pycache__/__init__.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/__pycache__/ovs.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/__pycache__/utils.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/__pycache__/sriov.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/__pycache__/core.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/__init__.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/generate.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/ip.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/migrate.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/info.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/get.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/set.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/apply.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/try_command.cpython-310.pyc
+/mnt/usr/share/netplan/netplan/cli/commands/__pycache__/sriov_rebind.cpython-310.pyc
+/mnt/etc/passwd
+/mnt/etc/group
+/mnt/etc/machine-id
+/mnt/etc/shadow
+/mnt/etc/passwd-
+/mnt/etc/gshadow
+/mnt/etc/hostname
+/mnt/etc/shadow-
+/mnt/etc/ssh/ssh_host_dsa_key.pub
+/mnt/etc/ssh/ssh_host_ed25519_key.pub
+/mnt/etc/ssh/ssh_host_ed25519_key
+/mnt/etc/ssh/ssh_host_dsa_key
+/mnt/etc/ssh/ssh_host_ecdsa_key.pub
+/mnt/etc/ssh/ssh_host_ecdsa_key
+/mnt/etc/ssh/ssh_host_rsa_key
+/mnt/etc/ssh/ssh_host_rsa_key.pub
+/mnt/etc/netplan/50-cloud-init.yaml
+/mnt/etc/subuid
+/mnt/etc/subgid
+/mnt/etc/apt/sources.list
+```
+There should be a file `/home/ubuntu/setupNginx.sh` which should provide a username and password for (which is not, hence I did something wrong)
 
 
 <<To_Be_Continued>>
