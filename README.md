@@ -50,7 +50,9 @@ So we know it's hosted in the AWS region us-west-2
 Side note (not useful for this game): All S3 buckets, when configured for web hosting, are given an AWS domain you can use to browse to it without setting up your own DNS. In this case, flaws.cloud can also be visited by going to http://flaws.cloud.s3-website-us-west-2.amazonaws.com/
 
 What will help you for this level is to know its permissions are a little loose.
+</details>
 
+<details closed>
 <summary>Level 1: Hint 2</summary>
 You now know that we have a bucket named `flaws.cloud` in `us-west-2`, so you can attempt to browse the bucket by using the aws cli by running:
 
@@ -61,7 +63,8 @@ If you happened to not know the region, there are only a dozen regions to try. Y
 Finally, you can also just visit http://flaws.cloud.s3.amazonaws.com/ which lists the files due to the permissions issues on this bucket.
 
 Want to just know how to get to the next level without running these tools?
-
+</details>
+<details closed>
 <summary>Level 1: Hint 3 - solution</summary>
 At this point, you should have found a file that will tell you to go to the sub-domain http://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud
 </details>
@@ -141,7 +144,8 @@ You need your own AWS key, and you need to use the AWS CLI. Similar to the first
 Its permissions are too loose, but you need your own AWS account to see what's inside. Using your own account you can run:
 
 `aws s3 --profile YOUR_ACCOUNT ls s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud`
-
+</details>
+<details closed>
 <summary>Level 2: Hint 2 - solution</summary>
 The next level is at http://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud
 </details>
@@ -193,7 +197,8 @@ Like the first level, you should have figured out how to list the files in this 
 This S3 bucket has a .git file. There are probably interesting things in it. Download this whole S3 bucket using:
 
 `aws s3 sync s3://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud/ . --no-sign-request --region us-west-2`
-
+</details>
+<details closed>
 <summary>Level 3: Hint 2</summary>
 People often accidentally add secret things to git repos, and then try to remove them without revoking or rolling the secrets. You can look through the history of a git repo by running:
 
@@ -204,7 +209,8 @@ Then you can look at what a git repo looked like at the time of a commit by runn
 `git checkout f7cebc46b471ca9838a0bdd1074bb498a3f84c87`
 
 where `f7cebc46b471ca9838a0bdd1074bb498a3f84c87` would be the hash for the commit shown in `git log`.
-
+</details>
+<details closed>
 <summary>Level 3: Hint 3</summary>
 You should have found the AWS key and secret. You can configure your aws command to use it and create a profile for it using:
 
@@ -213,7 +219,8 @@ You should have found the AWS key and secret. You can configure your aws command
 Then to list S3 buckets using that profile run:
 
 `aws --profile flaws s3 ls`
-
+</details>
+<details closed>
 <summary>Level 3: Hint 4 - Solution</summary>
 The next level is at http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud
 </details>
@@ -328,7 +335,8 @@ We specify the owner-id just to filter the output. For fun, run that command wit
 
 This snapshot is in us-west-2
 You're going to want to look in that snapshot.
-
+</details>
+<details closed>
 <summary>Level 4: Hint 2</summary>
 Now that you know the snapshot ID, you're going to want to mount it. You'll need to do this in your own AWS account, which you can get for free.
 
@@ -363,14 +371,16 @@ sudo file -s /dev/xvdb1
 sudo mount /dev/xvdb1 /mnt
 ```
 Now you can dig around in that snapshot.
-
+</details>
+<details closed>
 <summary>Level 4: Hint 3</summary>
 Once you've attached the volume, you'll want to look around for something that might tell you the password. Running some variant of `find /mnt -mtime -1` will help to find recent files, which you can filter further using:
 
 `find /mnt -type f -mtime -1 2>/dev/null | grep -v "/var/" | grep -v "/proc/" | grep -v "/dev/" | grep -v "/sys/" | grep -v "/run/" | less`
 
 That should show about 36 files that have changed to help narrow down your search. 
-
+</details>
+<details closed>
 <summary>Level 4: Hint 4 - Solution</summary>
 In the ubuntu user's home directory is the file: `/home/ubuntu/setupNginx.sh`
 
