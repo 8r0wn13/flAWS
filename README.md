@@ -2,7 +2,7 @@
 > Scott Piper created this challenge and therefore all credits (including the screenshots he/I made) should go to him.<br>
 I am thankful Scott created this challenge and I was able to practice with it, especially the explanations after solving a level to have better understanding of where the misconfiguration(s) occured.<br>
 
-> Personal note: I did the exercises without using the  hints and only included them after I solved a level.<br>
+> Personal note: I tried to do the exercises without using the hints and only included them after I solved a level, but in some cases I did need the hints to get further.<br>
 To avoid any spoilers, hints are closed by default, but available if you need them.<br>
 Try to solve the levels without the hints in order to have the biggest learning effect :-)
 
