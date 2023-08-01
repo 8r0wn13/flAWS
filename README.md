@@ -315,7 +315,7 @@ Always roll your secrets if you suspect they were compromised or made public or 
 
 ## Level 4
 ### Description
-For the next level, you need to get access to the web page running on an EC2 at 4d0cf09b9b2d761a7d87be99d17507bce8b86f3b.flaws.cloud
+For the next level, you need to get access to the web page running on an EC2 at http://4d0cf09b9b2d761a7d87be99d17507bce8b86f3b.flaws.cloud
 
 It'll be useful to know that a snapshot was made of that EC2 shortly after nginx was setup on it. 
 
@@ -325,11 +325,11 @@ You can snapshot the disk volume of an EC2 as a backup. In this case, the snapsh
 
 To do this, first we need the account ID, which we can get using the AWS key from the previous level:
 
-`aws --profile flaws sts get-caller-identity`
+`aws --profile unknown_user sts get-caller-identity`
 
 Using that command also tells you the name of the account, which in this case is named "backup". The backups this account makes are snapshots of EC2s. Next, discover the snapshot:
 
-`aws --profile flaws ec2 describe-snapshots --owner-id 975426262029`
+`aws --profile unknown_user ec2 describe-snapshots --owner-id 975426262029`
 
 We specify the owner-id just to filter the output. For fun, run that command without the owner-id and notice all the snapshots that are publicy readable. By default snapshots are private, and you can transfer them between accounts securely by specifiying the account ID of the other account, but a number of people just make them public and forget about them it seems.
 
@@ -388,14 +388,24 @@ This creates the basic HTTP auth user:
 
 `htpasswd -b /etc/nginx/.htpasswd flaws nCP8xigdjpjyiXgJ7nJu7rw5Ro68iE8M`
 
-That is the username and password for the user. Enter those at 4d0cf09b9b2d761a7d87be99d17507bce8b86f3b.flaws.cloud
+That is the username and password for the user. Enter those at http://4d0cf09b9b2d761a7d87be99d17507bce8b86f3b.flaws.cloud
 </details>
 
 ### My solution Level 4
+First the Account ID is needed:
+`aws --profile unknown_user sts get-caller-identity`
+```
+{
+    "UserId": "AIDAJQ3H5DC3LEG2BKSLC",
+    "Account": "975426262029",
+    "Arn": "arn:aws:iam::975426262029:user/backup"
+}
+```
+With the user ID we can get a snapshot:
+`aws --profile unknown_user ec2 describe-snapshots --owner-id 975426262029`
+The above command will return that a region needs to be specified:
+```You must specify a region. You can also configure your region by running "aws configure".```
 
 
 
-
-
-
-<<To be continued, problems with my AWS account>>
+<<To be continued>>
