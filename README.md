@@ -49,7 +49,21 @@ So we know it's hosted in the AWS region us-west-2
 
 Side note (not useful for this game): All S3 buckets, when configured for web hosting, are given an AWS domain you can use to browse to it without setting up your own DNS. In this case, flaws.cloud can also be visited by going to http://flaws.cloud.s3-website-us-west-2.amazonaws.com/
 
-What will help you for this level is to know its permissions are a little loose. 
+What will help you for this level is to know its permissions are a little loose.
+
+<summary>Level 1: Hint 2</summary>
+You now know that we have a bucket named `flaws.cloud` in `us-west-2`, so you can attempt to browse the bucket by using the aws cli by running:
+
+`aws s3 ls  s3://flaws.cloud/ --no-sign-request --region us-west-2`
+
+If you happened to not know the region, there are only a dozen regions to try. You could also use the GUI tool cyberduck to browse this bucket and it will figure out the region automatically.
+
+Finally, you can also just visit http://flaws.cloud.s3.amazonaws.com/ which lists the files due to the permissions issues on this bucket.
+
+Want to just know how to get to the next level without running these tools?
+
+<summary>Level 1: Hint 3 - solution</summary>
+At this point, you should have found a file that will tell you to go to the sub-domain http://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud
 </details>
 
 ### My solution Level 1
@@ -128,6 +142,8 @@ Its permissions are too loose, but you need your own AWS account to see what's i
 
 `aws s3 --profile YOUR_ACCOUNT ls s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud`
 
+<summary>Level 2: Hint 2 - solution</summary>
+The next level is at http://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud
 </details>
 
 ### My solution Level 2
@@ -178,6 +194,28 @@ This S3 bucket has a .git file. There are probably interesting things in it. Dow
 
 `aws s3 sync s3://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud/ . --no-sign-request --region us-west-2`
 
+<summary>Level 3: Hint 2</summary>
+People often accidentally add secret things to git repos, and then try to remove them without revoking or rolling the secrets. You can look through the history of a git repo by running:
+
+`git log`
+
+Then you can look at what a git repo looked like at the time of a commit by running:
+
+`git checkout f7cebc46b471ca9838a0bdd1074bb498a3f84c87`
+
+where `f7cebc46b471ca9838a0bdd1074bb498a3f84c87` would be the hash for the commit shown in `git log`.
+
+<summary>Level 3: Hint 3</summary>
+You should have found the AWS key and secret. You can configure your aws command to use it and create a profile for it using:
+
+`aws configure --profile flaws`
+
+Then to list S3 buckets using that profile run:
+
+`aws --profile flaws s3 ls`
+
+<summary>Level 3: Hint 4 - Solution</summary>
+The next level is at http://level4-1156739cfb264ced6de514971a4bef68.flaws.cloud
 </details>
 
 ### My solution Level 3
@@ -276,7 +314,71 @@ It'll be useful to know that a snapshot was made of that EC2 shortly after nginx
 
 <details closed>
 <summary>Level 4: Hint 1</summary>
-Hint for level 4
+You can snapshot the disk volume of an EC2 as a backup. In this case, the snapshot was made public, but you'll need to find it.
+
+To do this, first we need the account ID, which we can get using the AWS key from the previous level:
+
+`aws --profile flaws sts get-caller-identity`
+
+Using that command also tells you the name of the account, which in this case is named "backup". The backups this account makes are snapshots of EC2s. Next, discover the snapshot:
+
+`aws --profile flaws ec2 describe-snapshots --owner-id 975426262029`
+
+We specify the owner-id just to filter the output. For fun, run that command without the owner-id and notice all the snapshots that are publicy readable. By default snapshots are private, and you can transfer them between accounts securely by specifiying the account ID of the other account, but a number of people just make them public and forget about them it seems.
+
+This snapshot is in us-west-2
+You're going to want to look in that snapshot.
+
+<summary>Level 4: Hint 2</summary>
+Now that you know the snapshot ID, you're going to want to mount it. You'll need to do this in your own AWS account, which you can get for free.
+
+First, create a volume using the snapshot:
+
+`aws --profile YOUR_ACCOUNT ec2 create-volume --availability-zone us-west-2a --region us-west-2  --snapshot-id  snap-0b49342abd1bdcb89`
+
+Now in the console you can create an EC2 (I prefer ubuntu, but any linux will do) in the us-west-2 region and in the storage options, choose the volume you just created.
+
+SSH in with something like:
+
+`ssh -i YOUR_KEY.pem  ubuntu@ec2-54-191-240-80.us-west-2.compute.amazonaws.com`
+
+We'll need to mount this extra volume by running:
+```
+lsblk
+
+# Returns:
+#  NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+#  xvda    202:0    0   8G  0 disk
+#  â””â”€xvda1 202:1    0   8G  0 part /
+#  xvdb    202:16   0   8G  0 disk
+#  â””â”€xvdb1 202:17   0   8G  0 part
+
+sudo file -s /dev/xvdb1
+
+# Returns:
+#  /dev/xvdb1: Linux rev 1.0 ext4 filesystem data, UUID=5a2075d0-d095-4511-bef9-802fd8a7610e, volume name "cloudimg-rootfs" (extents) (large files) (huge files)
+
+# Next we mount it
+
+sudo mount /dev/xvdb1 /mnt
+```
+Now you can dig around in that snapshot.
+
+<summary>Level 4: Hint 3</summary>
+Once you've attached the volume, you'll want to look around for something that might tell you the password. Running some variant of `find /mnt -mtime -1` will help to find recent files, which you can filter further using:
+
+`find /mnt -type f -mtime -1 2>/dev/null | grep -v "/var/" | grep -v "/proc/" | grep -v "/dev/" | grep -v "/sys/" | grep -v "/run/" | less`
+
+That should show about 36 files that have changed to help narrow down your search. 
+
+<summary>Level 4: Hint 4 - Solution</summary>
+In the ubuntu user's home directory is the file: `/home/ubuntu/setupNginx.sh`
+
+This creates the basic HTTP auth user:
+
+`htpasswd -b /etc/nginx/.htpasswd flaws nCP8xigdjpjyiXgJ7nJu7rw5Ro68iE8M`
+
+That is the username and password for the user. Enter those at 4d0cf09b9b2d761a7d87be99d17507bce8b86f3b.flaws.cloud
 </details>
 
 ### My solution Level 4
