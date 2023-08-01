@@ -403,8 +403,11 @@ First the Account ID is needed:<br>
 ```
 With the user ID we can get a snapshot:<br>
 `aws --profile unknown_user ec2 describe-snapshots --owner-id 975426262029`
+
 The above command will return that a region needs to be specified:
-```You must specify a region. You can also configure your region by running "aws configure".```
+```
+You must specify a region. You can also configure your region by running "aws configure".
+```
 
 
 
