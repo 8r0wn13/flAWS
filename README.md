@@ -437,6 +437,7 @@ I was not able to figure out the region of the owner-id, but according to the hi
 This shows it is a snapshot with ID `snap-0b49342abd1bdcb89`<br>
 Now the snapshot can be mounted with my own AWS account<br>
 `aws --profile dennis ec2 create-volume --region us-west-2  --snapshot-id  snap-0b49342abd1bdcb89`
+
 When running the above code it will mention that --availability-zone needs to be provided:<br>
 ```
 aws: error: the following arguments are required: --availability-zone
@@ -465,6 +466,7 @@ ubuntu@ec2-52-90-5-57.compute-1.amazonaws.com: Permission denied (publickey).
 ```
 It needs to have r/w or r access only for this user:<br>
 `sudo chmode 600 level4.pem`
+
 Running the following command will log into the EC2 instance from the local machine:<br>
 `ssh -i level4.pem ubuntu@ec2-52-90-5-57.compute-1.amazonaws.com`
 ```
@@ -556,5 +558,6 @@ Now the instance can be searched for passwords:<br>
 ```
 There should be a file `/home/ubuntu/setupNginx.sh` which should provide a username and password for (which is not, hence I did something wrong)
 
+***I am taking a break from this as I have problems with my EC2 credentials in AWS and I cannot get it to work***
 
 <<To_Be_Continued>>
